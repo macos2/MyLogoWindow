@@ -72,7 +72,7 @@ int main(int argc, char *argv[]) {
 	GtkWindow *mwin=gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_default_size(mwin,512,512);
 	/*Disable the decorate to make it have a good look.*/
-	gtk_window_set_decorated(mwin,TRUE);
+	gtk_window_set_decorated(mwin,FALSE);
 
 	/*Create the logo widget and add it to the Main Window
 	 * It need the root_window to apply additional setting.
