@@ -69,7 +69,7 @@ int main(int argc, char *argv[]) {
 	/*Create a button to exit*/
 	GtkButton *button = gtk_button_new_with_label("Close");
 
-	/*Add the button to the logo widget ;
+	/*Add the button to the logo widget;
 	 *And set the position and size in the logo widget.
 	 *With the last parameter 'TRUE' to make it's size and position is relate to the parent size allocation(it will change while the allocation was modify)*/
 	my_logo_pack(logo,button,40/*40% parent allocation distance to the left*/,100-40*100/512,20/*20% width to the parent allocation*/,40*100/512,TRUE);
