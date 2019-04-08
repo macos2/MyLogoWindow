@@ -5,6 +5,7 @@
  *      Author: tom
  */
 #include <gtk/gtk.h>
+#include "MyLogoResource.h"
 #include "MyLogo.h"
 
 
@@ -39,9 +40,24 @@ void my_custom_draw(MyLogo *self,cairo_t *cr) {
 
 }
 
+cairo_status_t cairo_read_png_from_gresource (GInputStream *in,
+					     unsigned char	*data,
+					     unsigned int	length){
+	gsize read=g_input_stream_read(in,data,length,NULL,NULL);
+	if(read==0) {
+		g_input_stream_close(in,NULL,NULL);
+		g_object_unref(in);
+	}
+	return CAIRO_STATUS_SUCCESS;
+};
+
 void load_png(MyLogo *self,cairo_t *cr) {
 	cairo_save(cr);
-	cairo_surface_t *surf=cairo_image_surface_create_from_png("gimp.png");
+	GFile *file=g_file_new_for_uri("resource:///org/gtk/gimp.png");
+	GInputStream *in=g_file_read(file,NULL,NULL);
+	g_object_unref(file);
+	cairo_surface_t *surf=cairo_image_surface_create_from_png_stream(cairo_read_png_from_gresource,in);
+	//cairo_surface_t *surf=cairo_image_surface_create_from_png("gimp.png");
 	cairo_set_source_surface(cr,surf,0,0);
 	cairo_paint(cr);
 	cairo_surface_destroy(surf);
@@ -56,7 +72,7 @@ int main(int argc, char *argv[]) {
 	GtkWindow *mwin=gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_default_size(mwin,512,512);
 	/*Disable the decorate to make it have a good look.*/
-	gtk_window_set_decorated(mwin,FALSE);
+	gtk_window_set_decorated(mwin,TRUE);
 
 	/*Create the logo widget and add it to the Main Window
 	 * It need the root_window to apply additional setting.
