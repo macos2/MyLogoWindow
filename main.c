@@ -4,9 +4,7 @@
  *  Created on: 2019年4月5日
  *      Author: tom
  */
-#include <X11/Xlib.h>
 #include <gtk/gtk.h>
-
 #include "MyLogo.h"
 
 
