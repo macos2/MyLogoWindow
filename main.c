@@ -54,23 +54,31 @@ void load_png(MyLogo *self,cairo_t *cr) {
 
 int main(int argc, char *argv[]) {
 	gtk_init(&argc, &argv);
+	/*Create the Main Window*/
 	GtkWindow *mwin=gtk_window_new(GTK_WINDOW_TOPLEVEL);
-
-
 	gtk_window_set_default_size(mwin,512,512);
+	/*Disable the decorate to make it have a good look.*/
 	gtk_window_set_decorated(mwin,FALSE);
-	MyLogo *win = my_logo_new(mwin,TRUE);
-	gtk_container_add(mwin,win);
 
+	/*Create the logo widget and add it to the Main Window
+	 * It need the root_window to apply additional setting.
+	 * and the last parameter 'TRUE' to make it can be move by the it's content.*/
+	MyLogo *logo = my_logo_new(mwin,TRUE);
+	gtk_container_add(mwin,logo);
+
+	/*Create a button to exit*/
 	GtkButton *button = gtk_button_new_with_label("Close");
-	my_logo_pack(win,button,40,100-40*100/512,20,40*100/512,TRUE);
 
-	g_signal_connect(win,"logo_draw",my_custom_draw,NULL);
-	g_signal_connect(win,"logo_draw",load_png,NULL);
+	/*Add the button to the logo widget ;
+	 *And set the position and size in the logo widget.
+	 *With the last parameter 'TRUE' to make it's size and position is relate to the parent size allocation(it will change while the allocation was modify)*/
+	my_logo_pack(logo,button,40/*40% parent allocation distance to the left*/,100-40*100/512,20/*20% width to the parent allocation*/,40*100/512,TRUE);
+
+	g_signal_connect(logo,"logo_draw",my_custom_draw,NULL);
+	g_signal_connect(logo,"logo_draw",load_png,NULL);
 	g_signal_connect(button,"clicked",gtk_main_quit,NULL);
 
 
-	gtk_widget_show_all(win);
 	gtk_widget_show_all(mwin);
 	gtk_main();
 	return 0;
